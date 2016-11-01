@@ -41,7 +41,7 @@ let s:comment_map = {
             \   "tex": '%',
             \ }
 
-function! functions#debugToggle(curr, line, cft, cprefix, toggle)
+function! debug#debugToggle(curr, line, cft, cprefix, toggle)
     let l:match = matchstr(a:line, a:cprefix)
 
     if(empty(l:match) && !a:toggle)
@@ -65,7 +65,7 @@ function! functions#debugToggle(curr, line, cft, cprefix, toggle)
     end
 endfunction
 
-function! functions#debug(toggle) range
+function! debug#debug(toggle) range
     let l:cft = s:comment_map[&filetype]
     let l:prefix = '.*' . l:cft
     let l:cprefix = '^\s*' . l:cft
@@ -81,7 +81,7 @@ function! functions#debug(toggle) range
             else
                 let l:match = matchstr(l:line, l:prefix . ' DEBUG$')
                 if(!empty(l:match))
-                    call functions#debugToggle(
+                    call debug#debugToggle(
                                 \ l:curr,
                                 \ l:line,
                                 \ l:cft,
@@ -94,7 +94,7 @@ function! functions#debug(toggle) range
             if(!empty(l:match))
                 let l:in_debug = 0
             else
-                call functions#debugToggle(
+                call debug#debugToggle(
                             \ l:curr,
                             \ l:line,
                             \ l:cft,
@@ -105,7 +105,7 @@ function! functions#debug(toggle) range
     endfor
 endfunction
 
-function! functions#toggleDebug()
+function! debug#toggleDebug()
     if s:debugging
         let s:debugging = 0
         echom 'Ending debug'
@@ -114,11 +114,11 @@ function! functions#toggleDebug()
         echom 'Starting debug'
     endif
 
-    exec '1,$call functions#debug(' . s:debugging . ')'
+    exec '1,$call debug#debug(' . s:debugging . ')'
 endfunction
 
-command! -range StartDebug 1,$call functions#debug(1)
-command! -range EndDebug 1,$call functions#debug(0)
-command! ToggleDebug call functions#toggleDebug()
+command! -range StartDebug 1,$call debug#debug(1)
+command! -range EndDebug 1,$call debug#debug(0)
+command! ToggleDebug call debug#toggleDebug()
 
 let g:loaded_debug_comment = 2
