@@ -117,8 +117,8 @@ function! debug#toggleDebug()
     exec '1,$call debug#debug(' . s:debugging . ')'
 endfunction
 
-command! -range StartDebug 1,$call debug#debug(1)
-command! -range EndDebug 1,$call debug#debug(0)
+command! -range=% StartDebug call debug#debug(1)
+command! -range=% EndDebug call debug#debug(0)
 command! ToggleDebug call debug#toggleDebug()
 
 let g:loaded_debug_comment = 2
